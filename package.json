@@ -4,17 +4,32 @@
   "description": "A lightweight JavaScript library for creating interactive diagrams, flowcharts, and visualizations.",
   "main": "dist/flowcanvas.js",
   "module": "src/index.js",
-  "files": ["dist", "src", "examples", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "rollup -c",
     "dev": "vite",
     "playground": "vite --root examples/playground.html"
   },
-  "keywords": ["diagram", "flowchart", "canvas", "jsPlumb", "graph"],
+  "keywords": [
+    "diagram",
+    "flowchart",
+    "canvas",
+    "jsPlumb",
+    "graph"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
-    "rollup": "^3.0.0",
-    "rollup-plugin-terser": "^7.0.0"
+    "rollup": "^3.29.5",
+    "rollup-plugin-terser": "^7.0.2"
+  },
+  "dependencies": {
+    "flowcanvas": "^1.0.0"
   }
 }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FlowCanvas Playground</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    #toolbar {
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-bottom: 1px solid #ccc;
+    }
+    #canvas-container {
+      width: 100vw;
+      height: calc(100vh - 44px);
+      overflow: hidden;
+    }
+    .connector {
+      stroke: #333;
+      stroke-width: 2;
+      fill: none;
+    }
+    .selection-box {
+      fill: rgba(0,150,255,0.2);
+      stroke: #0096ff;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="toolbar">
+    <button onclick="addNode()">Add Node</button>
+    <button onclick="connectRandom()">Connect</button>
+    <button onclick="undo()">Undo</button>
+    <button onclick="redo()">Redo</button>
+    <button onclick="save()">Save</button>
+    <button onclick="load()">Load</button>
+  </div>
+
+  <div id="canvas-container">
+    <svg id="canvas"></svg>
+  </div>
+
+  <pre id="json-output" style="display:none;"></pre>
+
+  <script type="module">
+    import { Canvas, Node, Connector } from '../src/index.js';
+
+    const canvas = new Canvas(document.getElementById('canvas'));
+    window.canvas = canvas;
+
+    function addNode(x = 100, y = 100) {
+      const node = new Node(canvas, x, y, 'Node');
+      node.onMove(() => {
+        canvas.updateConnectorsFor(node);
+        canvas.takeSnapshot();
+      });
+      canvas.takeSnapshot();
+      return node;
+    }
+
+    function connectRandom() {
+      if (canvas.nodes.length < 2) return alert("Add at least two nodes");
+      const [n1, n2] = canvas.nodes.sort(() => 0.5 - Math.random()).slice(0, 2);
+      new Connector(canvas, n1, n2);
+      canvas.takeSnapshot();
+    }
+
+    function undo() { canvas.undo(); }
+    function redo() { canvas.redo(); }
+
+    function save() {
+      const json = canvas.exportDiagram();
+      document.getElementById('json-output').textContent = JSON.stringify(json, null, 2);
+    }
+
+    function load() {
+      try {
+        const data = JSON.parse(document.getElementById('json-output').textContent);
+        canvas.importDiagram(data);
+      } catch (e) {
+        alert("Invalid JSON");
+      }
+    }
+  </script>
+</body>
+</html>

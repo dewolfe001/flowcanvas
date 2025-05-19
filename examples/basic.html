@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FlowCanvas - Basic Example</title>
+  <style>
+    body { margin: 0; }
+    #canvas {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <svg id="canvas"></svg>
+
+  <script type="module">
+    import { Canvas, Node, Connector } from '../src/index.js';
+
+    const canvas = new Canvas(document.getElementById('canvas'));
+
+    const node1 = new Node(canvas, 100, 100, 'Start');
+    const node2 = new Node(canvas, 300, 200, 'End');
+
+    new Connector(canvas, node1, node2);
+  </script>
+</body>
+</html>
